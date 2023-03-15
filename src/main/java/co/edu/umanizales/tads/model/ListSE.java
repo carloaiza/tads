@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.model;
 
+import ch.qos.logback.core.joran.spi.ElementSelector;
 import lombok.Data;
 
 @Data
@@ -57,4 +58,38 @@ public class ListSE {
             head = new Node(kid);
         }
     }
+
+    public void invert(){
+        if(this.head !=null){
+            ListSE listCp = new ListSE();
+            Node temp = this.head;
+            while(temp != null){
+                listCp.addToStart(temp.getData());
+                temp = temp.getNext();
+            }
+            this.head = listCp.getHead();
+        }
+    }
+
+    public void orderBoysToStart(){
+        if(this.head !=null){
+            ListSE listCp = new ListSE();
+            Node temp = this.head;
+            while(temp != null){
+                if(temp.getData().getGender()=='M')
+                {
+                    listCp.addToStart(temp.getData());
+                }
+                else{
+                    listCp.add(temp.getData());
+                }
+
+                temp = temp.getNext();
+            }
+            this.head = listCp.getHead();
+        }
+    }
+
+
+
 }

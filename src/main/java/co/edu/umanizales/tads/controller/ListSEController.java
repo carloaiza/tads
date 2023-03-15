@@ -18,7 +18,16 @@ public class ListSEController {
     @GetMapping
     public ResponseEntity<ResponseDTO> getKids(){
         return new ResponseEntity<>(new ResponseDTO(
-                200,listSEService.getKids(),null), HttpStatus.OK);
+                200,listSEService.getKids().getHead(),null), HttpStatus.OK);
+    }
+
+    @GetMapping("/invert")
+    public ResponseEntity<ResponseDTO> invert(){
+        listSEService.getKids().invert();
+        return new ResponseEntity<>(new ResponseDTO(
+                200,"SE ha invertido la lista",
+                null), HttpStatus.OK);
+
     }
 
 }
