@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class ListSE {
     private Node head;
+    private int size;
     /*
     Algoritmo de adicionar al final
     Entrada
@@ -36,6 +37,7 @@ public class ListSE {
         else {
             head = new Node(kid);
         }
+        size ++;
     }
 
     /* Adicionar al inicio
@@ -57,6 +59,7 @@ public class ListSE {
         else {
             head = new Node(kid);
         }
+        size++;
     }
 
     public void invert(){
@@ -88,6 +91,36 @@ public class ListSE {
             }
             this.head = listCp.getHead();
         }
+    }
+
+    public void changeExtremes(){
+        if(this.head !=null && this.head.getNext() !=null)
+        {
+            Node temp = this.head;
+            while(temp.getNext()!=null)
+            {
+                temp = temp.getNext();
+            }
+            //temp está en el último
+            Kid copy = this.head.getData();
+            this.head.setData(temp.getData());
+            temp.setData(copy);
+        }
+
+    }
+
+    public int getCountKidsByLocationCode(String code){
+        int count =0;
+        if( this.head!=null){
+            Node temp = this.head;
+            while(temp != null){
+                if(temp.getData().getLocation().getCode().equals(code)){
+                    count++;
+                }
+                temp = temp.getNext();
+            }
+        }
+        return count;
     }
 
 

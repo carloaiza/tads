@@ -13,22 +13,11 @@ public class ListSEService {
 
     public ListSEService() {
         kids = new ListSE();
-        kids.add(new Kid("123","Carlos",(byte)4,'M'));
-        kids.add(new Kid("256","Mariana",(byte)3,'F'));
-        kids.add(new Kid("789","Daniel",(byte)5,'M'));
-
-        kids.addToStart(new Kid("967","Estefania",(byte)6,'F'));
 
     }
-/*
-    public Node getKids()
-    {
-        return kids.getHead();
-    }
 
-    public void invert(){
+   public void invert(){
         kids.invert();
     }
 
- */
 }
