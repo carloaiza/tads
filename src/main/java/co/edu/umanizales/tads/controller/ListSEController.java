@@ -2,7 +2,9 @@ package co.edu.umanizales.tads.controller;
 
 import co.edu.umanizales.tads.controller.dto.KidDTO;
 import co.edu.umanizales.tads.controller.dto.KidsByLocationDTO;
+import co.edu.umanizales.tads.controller.dto.ReportKidsLocationGenderDTO;
 import co.edu.umanizales.tads.controller.dto.ResponseDTO;
+import co.edu.umanizales.tads.exception.ListSEException;
 import co.edu.umanizales.tads.model.Kid;
 import co.edu.umanizales.tads.model.Location;
 import co.edu.umanizales.tads.service.ListSEService;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,10 +60,16 @@ public class ListSEController {
                    404,"La ubicación no existe",
                    null), HttpStatus.OK);
        }
-       listSEService.getKids().add(
-               new Kid(kidDTO.getIdentification(),
-                       kidDTO.getName(), kidDTO.getAge(),
-                       kidDTO.getGender(), location));
+        try {
+            listSEService.getKids().add(
+                    new Kid(kidDTO.getIdentification(),
+                            kidDTO.getName(), kidDTO.getAge(),
+                            kidDTO.getGender(), location));
+        } catch (ListSEException e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    409,e.getMessage(),
+                    null), HttpStatus.OK);
+        }
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Se ha adicionado el petacón",
                 null), HttpStatus.OK);
@@ -81,5 +90,14 @@ public class ListSEController {
                 null), HttpStatus.OK);
     }
 
-
+    @GetMapping(path = "/kidsbylocationgenders/{age}")
+    public ResponseEntity<ResponseDTO> getReportKisLocationGenders(@PathVariable byte age) {
+        ReportKidsLocationGenderDTO report =
+                new ReportKidsLocationGenderDTO(locationService.getLocationsByCodeSize(8));
+        listSEService.getKids()
+                .getReportKidsByLocationGendersByAge(age,report);
+        return new ResponseEntity<>(new ResponseDTO(
+                200,report,
+                null), HttpStatus.OK);
+    }
 }

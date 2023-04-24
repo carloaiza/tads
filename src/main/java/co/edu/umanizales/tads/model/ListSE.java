@@ -1,6 +1,8 @@
 package co.edu.umanizales.tads.model;
 
 import ch.qos.logback.core.joran.spi.ElementSelector;
+import co.edu.umanizales.tads.controller.dto.ReportKidsLocationGenderDTO;
+import co.edu.umanizales.tads.exception.ListSEException;
 import lombok.Data;
 
 @Data
@@ -23,12 +25,19 @@ public class ListSE {
     no
         metemos el niño en el costal y ese costal es la cabeza
      */
-    public void add(Kid kid){
+    public void add(Kid kid) throws ListSEException {
         if(head != null){
             Node temp = head;
             while(temp.getNext() !=null)
             {
+                if(temp.getData().getIdentification().equals(kid.getIdentification())){
+                    throw new ListSEException("Ya existe un niño");
+                }
                 temp = temp.getNext();
+
+            }
+            if(temp.getData().getIdentification().equals(kid.getIdentification())){
+                throw new ListSEException("Ya existe un niño");
             }
             /// Parado en el último
             Node newNode = new Node(kid);
@@ -74,7 +83,7 @@ public class ListSE {
         }
     }
 
-    public void orderBoysToStart(){
+    public void orderBoysToStart() throws ListSEException{
         if(this.head !=null){
             ListSE listCp = new ListSE();
             Node temp = this.head;
@@ -123,6 +132,18 @@ public class ListSE {
         return count;
     }
 
-
+    public void getReportKidsByLocationGendersByAge(byte age, ReportKidsLocationGenderDTO report){
+        if(head !=null){
+            Node temp = this.head;
+            while(temp!=null){
+                if(temp.getData().getAge()>age){
+                    report.updateQuantity(
+                            temp.getData().getLocation().getName(),
+                            temp.getData().getGender());
+                }
+                temp = temp.getNext();
+            }
+        }
+    }
 
 }
